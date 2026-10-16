@@ -1,6 +1,6 @@
 # amade-fractals
 
-**amade-fractals** is the fractal explorer of the [amadeOS](https://github.com/datazuul/amadeos) desktop: render the Mandelbrot set and its relatives, zoom in with a click, a frame or the mouse wheel, follow a Julia set from any point, colour the result and export it as a large picture. In the spirit of [Fractal Zoomer](https://github.com/hrkalona/Fractal-Zoomer), built like the other amadeOS applications.
+**amade-fractals** is the fractal explorer of the [amadeOS](https://github.com/datazuul/amadeos) desktop: render the Mandelbrot set and its relatives, zoom in with a click, a frame or the mouse wheel, follow a Julia set from any point, colour the result and export it as a large picture. Built like the other amadeOS applications.
 
 ![License](https://img.shields.io/badge/license-EUPL--1.2-blue)
 ![Java](https://img.shields.io/badge/Java-21-orange)
@@ -60,6 +60,10 @@ If `../amade-commons` is checked out next to this repository, Gradle builds agai
 - Deep zoom past 10⁻²⁹⁰ (floating-point numbers with an extended exponent), and perturbation for the other formulas and Julia sets
 - More colouring methods (distance estimation, stripe average) and a palette editor
 - Bookmarks of your own places
+
+## Background
+
+The formulas, the smooth colouring and perturbation are published mathematics, used by many fractal programs. The code here is written for amadeOS from scratch. Deep zoom follows the perturbation idea published by K. I. Martin (2013), with rebasing as described by Zhuoran (2021).
 
 ## Licence
 
