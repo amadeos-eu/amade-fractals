@@ -86,7 +86,7 @@ public final class MainWindow extends JFrame implements MainView {
     private final Timer resizeTimer;
     private final Timer cycleTimer;
     /** How long the hint about leaving full screen stays. */
-    static final int NOTE_TIME = 1500;
+    static final int NOTE_TIME = 3000;
     private final JPanel desk = new JPanel(new BorderLayout());
     private final Border deskBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
     private boolean fullScreen;
