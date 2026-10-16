@@ -1,0 +1,24 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=amadeOS Fractals
+Name[de]=amadeOS Fraktale
+Name[fr]=amadeOS Fractales
+Name[es]=amadeOS Fractales
+Name[it]=amadeOS Frattali
+GenericName=Fractal Explorer
+GenericName[de]=Fraktal-Explorer
+GenericName[fr]=Explorateur de fractales
+GenericName[es]=Explorador de fractales
+GenericName[it]=Esploratore di frattali
+Comment=Explore the Mandelbrot set, Julia sets and other fractals
+Comment[de]=Mandelbrot-Menge, Julia-Mengen und andere Fraktale erkunden
+Comment[fr]=Explorer l'ensemble de Mandelbrot, les ensembles de Julia et d'autres fractales
+Comment[es]=Explorar el conjunto de Mandelbrot, los conjuntos de Julia y otros fractales
+Comment[it]=Esplorare l'insieme di Mandelbrot, gli insiemi di Julia e altri frattali
+Icon=amade-fractals
+Exec=/usr/bin/amade-fractals %F
+Terminal=false
+Categories=Graphics;Education;Math;
+Keywords=fractal;mandelbrot;julia;zoom;burning ship;newton;math;
+StartupNotify=true
