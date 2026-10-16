@@ -17,7 +17,10 @@ import org.junit.jupiter.api.io.TempDir;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.nio.file.Path;
@@ -28,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
@@ -105,10 +109,45 @@ class MainWindowTest {
 
                 presenter.setBarVisible(Bar.SETTINGS, false);
                 presenter.setBarVisible(Bar.SETTINGS, true);
+
+                // Full screen: only the picture, without menu, bars and frame; F11 or Escape go back.
+                window.setVisible(true);
+                presenter.setBarVisible(Bar.STATUS_BAR, false);
+                actions.fullScreen.actionPerformed(null);
+                assertTrue(window.isFullScreen());
+                assertTrue(window.isUndecorated());
+                assertNull(window.getJMenuBar());
+                assertFalse(window.settingsPanel().isShowing());
+                assertTrue((Boolean) actions.fullScreen.getValue(Action.SELECTED_KEY));
+                assertEquals(MainPresenterTest.MSG.get("status.full-screen"), window.canvas().noteText());
+                presenter.zoomIn();
+                assertFalse(Double.isNaN(window.canvas().progressValue()));
+                executor.runAll();
+                assertTrue(Double.isNaN(window.canvas().progressValue()));
+                pressKey(window, KeyEvent.VK_ESCAPE);
+                assertFalse(window.isFullScreen());
+                assertFalse(window.isUndecorated());
+                assertNotNull(window.getJMenuBar());
+                assertTrue(window.settingsPanel().isShowing());
+                assertFalse(window.progressBar().getParent().getParent().isVisible(), "status bar stays hidden");
+                assertEquals("", window.canvas().noteText());
+                pressKey(window, KeyEvent.VK_F11);
+                assertTrue(window.isFullScreen());
+                pressKey(window, KeyEvent.VK_F11);
+                assertFalse(window.isFullScreen());
+                presenter.setBarVisible(Bar.STATUS_BAR, true);
             } finally {
                 window.dispose();
             }
         });
+    }
+
+    private static void pressKey(MainWindow window, int key) {
+        javax.swing.JRootPane root = window.getRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke(key, 0);
+        Object name = root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).get(stroke);
+        assertNotNull(name, "no binding for " + stroke);
+        root.getActionMap().get(name).actionPerformed(null);
     }
 
     private static void click(MainWindow window, int button, int x, int y, int modifiers) {

@@ -30,7 +30,7 @@ public final class ToolIcon implements Icon {
     public enum Glyph {
         OPEN, SAVE, PICTURE, EXPORT, COPY,
         BACK, FORWARD, HOME, ZOOM_IN, ZOOM_OUT,
-        JULIA, CYCLE, REFRESH, STOP
+        JULIA, CYCLE, REFRESH, STOP, FULL_SCREEN
     }
 
     private final Glyph glyph;
@@ -108,6 +108,7 @@ public final class ToolIcon implements Icon {
                 case CYCLE -> cycle();
                 case REFRESH -> refresh();
                 case STOP -> stop();
+                case FULL_SCREEN -> fullScreen();
             }
         }
 
@@ -305,6 +306,19 @@ public final class ToolIcon implements Icon {
             head.lineTo(10, 6.6);
             head.closePath();
             g.fill(head);
+        }
+
+        /** A screen with arrows to its four corners. */
+        private void fullScreen() {
+            fillAndDraw(new Rectangle2D.Double(1.5, 2.5, 13, 11), paper);
+            g.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+            double[][] corners = {{4, 5, 1, 1}, {12, 5, -1, 1}, {4, 11, 1, -1}, {12, 11, -1, -1}};
+            for (double[] c : corners) {
+                line(c[0], c[1], c[0] + 2.5 * c[2], c[1]);
+                line(c[0], c[1], c[0], c[1] + 2 * c[3]);
+                line(c[0], c[1], c[0] + 2 * c[2], c[1] + 1.6 * c[3]);
+            }
+            g.setStroke(new BasicStroke(1f));
         }
 
         private void stop() {

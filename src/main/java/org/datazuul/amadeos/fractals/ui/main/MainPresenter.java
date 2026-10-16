@@ -93,6 +93,7 @@ public final class MainPresenter {
     private RenderService.Task task;
     private RenderService.Task exportTask;
     private boolean cycling;
+    private boolean fullScreen;
     private Path parameterFile;
 
     @Inject
@@ -688,10 +689,32 @@ public final class MainPresenter {
 
     private void updateCommands() {
         view.updateCommands(new MainView.Commands(task != null, picture != null, !back.isEmpty(), !forward.isEmpty(),
-                settings.formula().hasJulia(), settings.julia(), cycling, exportTask != null));
+                settings.formula().hasJulia(), settings.julia(), cycling, exportTask != null, fullScreen));
     }
 
     // ---------------------------------------------------------------- window
+
+    public boolean isFullScreen() {
+        return fullScreen;
+    }
+
+    public void toggleFullScreen() {
+        setFullScreen(!fullScreen);
+    }
+
+    /** Full screen is not remembered: the program always starts in its window. */
+    public void setFullScreen(boolean on) {
+        if (on == fullScreen) return;
+        fullScreen = on;
+        view.setFullScreen(on);
+        updateCommands();
+    }
+
+    /** Escape: leaves full screen first, otherwise stops the calculation or the export. */
+    public void escape() {
+        if (fullScreen) setFullScreen(false);
+        else stop();
+    }
 
     public boolean isBarVisible(Bar bar) {
         return preferences.isVisible(bar);

@@ -15,8 +15,10 @@ import java.util.OptionalDouble;
 public interface MainView {
     /** Which commands can run now; menus and toolbar follow. */
     record Commands(boolean rendering, boolean hasPicture, boolean canGoBack, boolean canGoForward,
-                    boolean juliaAvailable, boolean julia, boolean cycling, boolean exporting) {
-        public static final Commands NONE = new Commands(false, false, false, false, false, false, false, false);
+                    boolean juliaAvailable, boolean julia, boolean cycling, boolean exporting,
+                    boolean fullScreen) {
+        public static final Commands NONE =
+                new Commands(false, false, false, false, false, false, false, false, false);
     }
 
     /** The centre and magnification as the settings panel shows them. */
@@ -74,6 +76,12 @@ public interface MainView {
 
     /** Shows or hides the toolbar, the settings or the status bar. */
     void showBar(Bar bar, boolean visible);
+
+    /**
+     * Full screen: only the picture, over the whole screen, without menu, bars and window frame; or back to the
+     * window as it was.
+     */
+    void setFullScreen(boolean fullScreen);
 
     /** A yes/no question; true for yes. */
     boolean confirm(String message, String title);

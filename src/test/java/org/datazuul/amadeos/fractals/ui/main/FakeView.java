@@ -33,6 +33,7 @@ final class FakeView implements MainView {
     boolean progressVisible;
     Commands commands = Commands.NONE;
     boolean cycling;
+    boolean fullScreen;
     boolean disposed;
     BufferedImage clipboardImage;
     String clipboardText;
@@ -136,6 +137,11 @@ final class FakeView implements MainView {
     @Override
     public void setCycling(boolean on) {
         cycling = on;
+    }
+
+    @Override
+    public void setFullScreen(boolean on) {
+        fullScreen = on;
     }
 
     @Override

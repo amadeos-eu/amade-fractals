@@ -1,6 +1,7 @@
 package org.datazuul.amadeos.fractals.ui.view;
 
 import javax.swing.JComponent;
+import javax.swing.Timer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -16,6 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -93,6 +95,11 @@ public final class FractalCanvas extends JComponent {
     /** Applied to the picture until a new one arrives; the identity when nothing is pending. */
     private AffineTransform pending = new AffineTransform();
     private String placeholder = "";
+    /** A short message over the picture, e.g. how to leave full screen; empty when none is shown. */
+    private String note = "";
+    private final Timer noteTimer = new Timer(0, e -> hideNote());
+    /** Progress line along the bottom edge, 0 to 1; NaN when hidden. Used in full screen, without status bar. */
+    private double progress = Double.NaN;
 
     private int pressX;
     private int pressY;
@@ -206,6 +213,38 @@ public final class FractalCanvas extends JComponent {
         repaint();
     }
 
+    /** Shows a message over the top of the picture for a while. */
+    public void showNote(String text, int millis) {
+        note = text == null ? "" : text;
+        noteTimer.stop();
+        noteTimer.setInitialDelay(millis);
+        noteTimer.setRepeats(false);
+        if (!note.isEmpty()) noteTimer.start();
+        repaint();
+    }
+
+    public void hideNote() {
+        noteTimer.stop();
+        note = "";
+        repaint();
+    }
+
+    /** The message shown, or empty. */
+    public String noteText() {
+        return note;
+    }
+
+    /** Shows a thin progress line along the bottom edge (0 to 1), or hides it (NaN). */
+    public void setProgress(double fraction) {
+        progress = Double.isNaN(fraction) ? Double.NaN : Math.max(0, Math.min(1, fraction));
+        repaint();
+    }
+
+    /** The progress line, or NaN when hidden. */
+    public double progressValue() {
+        return progress;
+    }
+
     /** Shows a new picture, scaled to the window if smaller (a preview); a pending transform ends. */
     public void setPicture(BufferedImage newPicture) {
         picture = newPicture;
@@ -262,6 +301,7 @@ public final class FractalCanvas extends JComponent {
             g2.fillRect(0, 0, getWidth(), getHeight());
             if (picture == null) {
                 paintPlaceholder(g2);
+                paintOverlay(g2);
                 return;
             }
             AffineTransform t = new AffineTransform(pending);
@@ -275,6 +315,7 @@ public final class FractalCanvas extends JComponent {
             }
             g2.drawImage(picture, t, null);
             if (frame != null) paintFrame(g2, frame);
+            paintOverlay(g2);
         } finally {
             g2.dispose();
         }
@@ -289,6 +330,29 @@ public final class FractalCanvas extends JComponent {
         g.setColor(Color.WHITE);
         g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{4f, 4f}, 0));
         g.drawRect(r.x, r.y, r.width - 1, r.height - 1);
+    }
+
+    private void paintOverlay(Graphics2D g) {
+        if (!Double.isNaN(progress)) {
+            int h = 4;
+            g.setColor(new Color(0, 0, 0, 120));
+            g.fillRect(0, getHeight() - h, getWidth(), h);
+            g.setColor(new Color(255, 255, 255, 200));
+            g.fillRect(0, getHeight() - h, (int) Math.round(getWidth() * progress), h);
+        }
+        if (note.isEmpty()) return;
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+        FontMetrics fm = g.getFontMetrics();
+        int w = fm.stringWidth(note) + 32;
+        int h = fm.getHeight() + 16;
+        int x = (getWidth() - w) / 2;
+        int y = 24;
+        g.setColor(new Color(0, 0, 0, 170));
+        g.fill(new RoundRectangle2D.Double(x, y, w, h, 12, 12));
+        g.setColor(Color.WHITE);
+        g.drawString(note, x + 16, y + 8 + fm.getAscent());
     }
 
     private void paintPlaceholder(Graphics2D g) {

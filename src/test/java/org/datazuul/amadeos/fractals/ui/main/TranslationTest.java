@@ -54,8 +54,8 @@ class TranslationTest {
                 "file", List.of("menu.file.open", "menu.file.save", "menu.file.save-image", "menu.file.export",
                         "menu.file.exit"),
                 "edit", List.of("menu.edit.back", "menu.edit.forward", "menu.edit.copy", "menu.edit.copy-parameters"),
-                "view", List.of("menu.view.home", "menu.view.zoom-in", "menu.view.zoom-out", "menu.view.refresh",
-                        "menu.view.stop"),
+                "view", List.of("menu.view.home", "menu.view.zoom-in", "menu.view.zoom-out",
+                        "menu.view.full-screen", "menu.view.refresh", "menu.view.stop"),
                 "fractal", List.of("menu.fractal.julia", "menu.fractal.more-iterations",
                         "menu.fractal.fewer-iterations", "menu.fractal.auto-iterations"));
         Map<String, String> clashes = new HashMap<>();

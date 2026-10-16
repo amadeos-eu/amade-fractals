@@ -69,6 +69,10 @@ public final class MainMenuBar extends JMenuBar {
         view.add(item(actions.home));
         view.add(item(actions.zoomIn));
         view.add(item(actions.zoomOut));
+        JCheckBoxMenuItem fullScreen = new JCheckBoxMenuItem(actions.fullScreen);
+        fullScreen.setName("menu.view.full-screen");
+        fullScreen.setIcon(null);
+        view.add(fullScreen);
         view.addSeparator();
         view.add(item(actions.refresh));
         view.add(item(actions.stop));

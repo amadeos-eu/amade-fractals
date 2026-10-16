@@ -397,6 +397,32 @@ class MainPresenterTest {
     }
 
     @Test
+    void fullScreenAndEscape() {
+        start();
+        assertFalse(view.commands.fullScreen());
+        presenter.toggleFullScreen();
+        assertTrue(view.fullScreen);
+        assertTrue(presenter.isFullScreen());
+        assertTrue(view.commands.fullScreen());
+        // Escape leaves full screen first and keeps the calculation going.
+        presenter.zoomIn();
+        presenter.escape();
+        assertFalse(view.fullScreen);
+        assertFalse(view.commands.fullScreen());
+        assertTrue(presenter.isRendering());
+        // Then it stops.
+        presenter.escape();
+        assertFalse(presenter.isRendering());
+        executor.runAll();
+        assertEquals("Stopped.", view.status);
+        // Full screen is not a bar setting: the bars keep their remembered state.
+        presenter.setFullScreen(true);
+        assertTrue(presenter.isBarVisible(Bar.TOOLBAR));
+        presenter.setFullScreen(false);
+        assertTrue(view.bars.isEmpty());
+    }
+
+    @Test
     void exitAsksWhileExporting() {
         start();
         view.exportSizeAnswers.add(Optional.of(new Dimension(64, 64)));

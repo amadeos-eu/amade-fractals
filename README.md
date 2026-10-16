@@ -14,6 +14,7 @@
   - the mouse wheel zooms at the pointer
   - drag with the right or middle button to move the picture
   - *Back* and *Forward* go through the history, *Home* shows the whole fractal again
+  - **full screen** (F11, *View → Full Screen* or the toolbar): only the picture, over the whole screen; all gestures and shortcuts keep working, a thin line along the bottom shows the progress, and F11 or Esc go back to the window
 
   Each gesture answers at once: the old picture is moved and scaled while the new one is calculated, and a coarse preview comes first.
 - **Deep zoom**: the Mandelbrot set zooms far below the precision of `double`, down to about 10⁻²⁹⁰, using **perturbation**. There is one reference orbit in arbitrary precision (`BigDecimal`), and every pixel follows its small distance from it in `double`. When the reference stops being any good for a pixel, the pixel goes back to the start of the reference (*rebasing*), so no glitch detection is needed. The centre keeps as many digits as the zoom needs. The other formulas stop where `double` ends and say so.

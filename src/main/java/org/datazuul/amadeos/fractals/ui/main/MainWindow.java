@@ -32,16 +32,19 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -82,6 +85,13 @@ public final class MainWindow extends JFrame implements MainView {
     private final JPanel statusBar;
     private final Timer resizeTimer;
     private final Timer cycleTimer;
+    /** How long the hint about leaving full screen stays. */
+    static final int NOTE_TIME = 3000;
+    private final JPanel desk = new JPanel(new BorderLayout());
+    private final Border deskBorder = BorderFactory.createBevelBorder(BevelBorder.LOWERED);
+    private boolean fullScreen;
+    private Rectangle normalBounds;
+    private int normalState;
     private JScrollPane settingsPane;
     private SettingsPanel settingsPanel;
     private MainMenuBar menuBar;
@@ -99,8 +109,7 @@ public final class MainWindow extends JFrame implements MainView {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         canvas.setName("canvas");
         canvas.setPlaceholder(msg.get("placeholder"));
-        JPanel desk = new JPanel(new BorderLayout());
-        desk.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+        desk.setBorder(deskBorder);
         desk.add(canvas, BorderLayout.CENTER);
         add(desk, BorderLayout.CENTER);
         statusBar = statusBar();
@@ -281,6 +290,7 @@ public final class MainWindow extends JFrame implements MainView {
         } else {
             progress.setString("");
         }
+        if (fullScreen) canvas.setProgress(fraction.orElse(0));
     }
 
     @Override
@@ -288,6 +298,7 @@ public final class MainWindow extends JFrame implements MainView {
         EdtExecutor.requireEdt();
         progress.setIndeterminate(false);
         progress.setVisible(false);
+        canvas.setProgress(Double.NaN);
     }
 
     @Override
@@ -516,12 +527,67 @@ public final class MainWindow extends JFrame implements MainView {
     @Override
     public void showBar(Bar bar, boolean visible) {
         EdtExecutor.requireEdt();
+        // In full screen the bars stay hidden; leaving it shows them as the presenter remembers them.
+        if (fullScreen) return;
         switch (bar) {
             case TOOLBAR -> toolBar.setVisible(visible);
             case SETTINGS -> settingsPane.setVisible(visible);
             case STATUS_BAR -> statusBar.setVisible(visible);
         }
         revalidate();
+    }
+
+    @Override
+    public void setFullScreen(boolean on) {
+        EdtExecutor.requireEdt();
+        if (on == fullScreen) return;
+        GraphicsDevice device = getGraphicsConfiguration().getDevice();
+        if (on) {
+            normalBounds = getBounds();
+            normalState = getExtendedState();
+            fullScreen = true;
+            setJMenuBar(null);
+            toolBar.setVisible(false);
+            settingsPane.setVisible(false);
+            statusBar.setVisible(false);
+            desk.setBorder(null);
+            // The window frame can only be removed while the window is not shown.
+            super.dispose();
+            setUndecorated(true);
+            if (device.isFullScreenSupported()) {
+                device.setFullScreenWindow(this);
+            } else {
+                setExtendedState(NORMAL);
+                setBounds(getGraphicsConfiguration().getBounds());
+            }
+            setVisible(true);
+            canvas.showNote(msg.get("status.full-screen"), NOTE_TIME);
+            if (progress.isVisible() && !progress.isIndeterminate()) canvas.setProgress(progress.getValue() / 1000.0);
+        } else {
+            leaveFullScreen(device);
+            fullScreen = false;
+            setUndecorated(false);
+            setJMenuBar(menuBar);
+            desk.setBorder(deskBorder);
+            for (Bar bar : Bar.values()) showBar(bar, presenter.isBarVisible(bar));
+            canvas.hideNote();
+            canvas.setProgress(Double.NaN);
+            if (normalBounds != null) setBounds(normalBounds);
+            setExtendedState(normalState);
+            setVisible(true);
+        }
+        revalidate();
+        canvas.requestFocusInWindow();
+    }
+
+    boolean isFullScreen() {
+        return fullScreen;
+    }
+
+    /** Gives the screen back and takes the window down, so that its frame can change. */
+    private void leaveFullScreen(GraphicsDevice device) {
+        if (device.getFullScreenWindow() == this) device.setFullScreenWindow(null);
+        super.dispose();
     }
 
     @Override
@@ -555,6 +621,11 @@ public final class MainWindow extends JFrame implements MainView {
 
     @Override
     public void dispose() {
+        if (fullScreen) {
+            GraphicsDevice device = getGraphicsConfiguration().getDevice();
+            if (device.getFullScreenWindow() == this) device.setFullScreenWindow(null);
+        }
+        canvas.hideNote();
         resizeTimer.stop();
         cycleTimer.stop();
         super.dispose();

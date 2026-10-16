@@ -30,6 +30,41 @@ class FractalCanvasTest {
     }
 
     @Test
+    void notesAndProgressOverThePicture() throws Exception {
+        FractalCanvas canvas = new FractalCanvas();
+        canvas.setSize(300, 200);
+        BufferedImage grey = new BufferedImage(300, 200, BufferedImage.TYPE_INT_RGB);
+        java.awt.Graphics g = grey.getGraphics();
+        g.setColor(new java.awt.Color(0x808080));
+        g.fillRect(0, 0, 300, 200);
+        g.dispose();
+        canvas.setPicture(grey);
+        assertEquals("", canvas.noteText());
+        assertTrue(Double.isNaN(canvas.progressValue()));
+        canvas.showNote("Full screen", 50);
+        assertEquals("Full screen", canvas.noteText());
+        BufferedImage shown = new BufferedImage(300, 200, BufferedImage.TYPE_INT_RGB);
+        canvas.setProgress(0.5);
+        canvas.paint(shown.getGraphics());
+        // The note darkens the middle at the top; the progress line is light up to the half, dark after it.
+        assertTrue((shown.getRGB(150, 30) & 0xFF) < 0x60, "note");
+        assertEquals(0x80, shown.getRGB(150, 100) & 0xFF);
+        assertTrue((shown.getRGB(100, 198) & 0xFF) > 0xC0, "progress");
+        assertTrue((shown.getRGB(250, 198) & 0xFF) < 0x60, "rest of the line");
+        canvas.setProgress(Double.NaN);
+        assertTrue(Double.isNaN(canvas.progressValue()));
+        canvas.setProgress(2);
+        assertEquals(1, canvas.progressValue(), 0);
+        // The note goes by itself.
+        long end = System.currentTimeMillis() + 5000;
+        while (!canvas.noteText().isEmpty() && System.currentTimeMillis() < end) {
+            javax.swing.SwingUtilities.invokeAndWait(() -> { });
+            Thread.sleep(20);
+        }
+        assertEquals("", canvas.noteText());
+    }
+
+    @Test
     void aNewPictureEndsThePendingTransform() {
         FractalCanvas canvas = new FractalCanvas();
         canvas.setSize(400, 300);

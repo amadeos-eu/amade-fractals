@@ -46,7 +46,7 @@ Languages: English, German, French, Spanish and Italian. The language follows th
 | `service.color` | `Colorizer` (smooth n + 1 − log(log\|z\|)/log d, bands, binary decomposition, orbit trap; Newton by root, darker with iterations) |
 | `repository` | `ParameterFiles` (`.fractal`, UTF-8 properties, all digits of the centre), `ImageFiles` (PNG/JPEG, atomic writes), `FractalsPreferences` (`~/.config/amadeos/fractals/fractals.properties`: bars, automatic iterations, export size) |
 | `ui.main` | `MainPresenter` (all commands and the history, no Swing), `MainView`, `MainWindow`, `MainMenuBar`, `MainToolBar`, `SettingsPanel` (fractal, location, colours), `FractalActions` (one action per command for menus and toolbar), `Formats` (magnification "1.5 × 10⁶", coordinates) |
-| `ui.view` | `FractalCanvas` (picture, gestures, transform until the next picture, frame with the window's shape) |
+| `ui.view` | `FractalCanvas` (picture, gestures, transform until the next picture, frame with the window's shape, notes and a progress line over the picture) |
 | `ui.icons` | `ToolIcon` (toolbar icons drawn in Java2D in the theme's colours) |
 
 ## Flows
@@ -70,6 +70,11 @@ Languages: English, German, French, Spanish and Italian. The language follows th
   1. Size dialog (window size, Full HD, QHD, 4K, 8K, A4 at 300 dpi, square, or custom), then the file chooser.
   2. Rendering strip by strip in the background, then an atomic write.
   3. Exports are limited to 64 megapixels and 20 000 pixels a side. A running export is confirmed before quitting.
+- **Full screen**
+  1. F11 (or the menu, or the toolbar) asks the presenter, which keeps the state and tells the window; full screen is not remembered across starts.
+  2. The window removes the menu bar, hides toolbar, settings and status bar, takes itself down to drop its frame (`setUndecorated` only works on a window that is not shown) and comes back over the whole screen through `GraphicsDevice.setFullScreenWindow`, or the screen's bounds where that is not supported.
+  3. The canvas shows a short hint how to leave, and the progress as a thin line along its bottom edge.
+  4. Escape is bound to the presenter's `escape()`: it leaves full screen first and only otherwise stops the calculation. Leaving restores frame, menu, the bars as the preferences say, bounds and maximised state.
 - **Theme and language**
   - Colours come from `AmadeUI` and follow the Style Manager.
   - Texts are in `messages*.properties`, checked by `TranslationCheck`, including a test against clashing mnemonics.

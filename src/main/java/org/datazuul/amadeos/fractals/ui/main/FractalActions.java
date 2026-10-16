@@ -40,6 +40,9 @@ public final class FractalActions {
     public final Action cycle;
     public final Action refresh;
     public final Action stop;
+    public final Action fullScreen;
+    /** Escape, without a menu entry: leaves full screen, otherwise stops. */
+    public final Action escape;
 
     private final Messages msg;
 
@@ -66,6 +69,15 @@ public final class FractalActions {
         cycle = action("menu.colors.cycle", Glyph.CYCLE, KeyEvent.VK_K, CTRL, presenter::toggleCycling);
         refresh = action("menu.view.refresh", Glyph.REFRESH, KeyEvent.VK_F5, 0, presenter::refresh);
         stop = action("menu.view.stop", Glyph.STOP, KeyEvent.VK_ESCAPE, 0, presenter::stop);
+        fullScreen = action("menu.view.full-screen", Glyph.FULL_SCREEN, KeyEvent.VK_F11, 0,
+                presenter::toggleFullScreen);
+        escape = new AbstractAction("escape") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                presenter.escape();
+            }
+        };
+        escape.putValue(Action.ACTION_COMMAND_KEY, "escape");
         back.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, ALT));
         forward.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, ALT));
         update(MainView.Commands.NONE);
@@ -74,12 +86,16 @@ public final class FractalActions {
     /** All actions, for tests and key bindings. */
     public List<Action> all() {
         return List.of(open, saveParameters, saveImage, exportImage, exit, back, forward, copy, copyParameters, home,
-                zoomIn, zoomOut, julia, moreIterations, fewerIterations, cycle, refresh, stop);
+                zoomIn, zoomOut, julia, moreIterations, fewerIterations, cycle, refresh, stop, fullScreen);
     }
 
-    /** Further keys that run an action, besides its accelerator: Ctrl+Z and Ctrl+Y for back and forward. */
+    /**
+     * Further keys that run an action, besides its accelerator: Ctrl+Z and Ctrl+Y for back and forward, the
+     * number pad for zooming, and Escape, which leaves full screen before it stops anything.
+     */
     public List<KeyBinding> extraKeys() {
-        return List.of(new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL), back),
+        return List.of(new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), escape),
+                new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_Z, CTRL), back),
                 new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_Y, CTRL), forward),
                 new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, CTRL), zoomIn),
                 new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, CTRL), zoomIn),
@@ -100,6 +116,7 @@ public final class FractalActions {
         cycle.setEnabled(c.hasPicture() || c.cycling());
         cycle.putValue(Action.SELECTED_KEY, c.cycling());
         stop.setEnabled(c.rendering() || c.exporting());
+        fullScreen.putValue(Action.SELECTED_KEY, c.fullScreen());
     }
 
     private Action action(String key, Glyph glyph, int keyCode, int modifiers, Runnable command) {
