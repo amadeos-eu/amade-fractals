@@ -1,6 +1,6 @@
 # amade-fractals – Architecture
 
-Fractal explorer of amadeOS. It uses Java 21, Swing, Guice and [amade-commons](https://github.com/datazuul/amade-commons), is built with Gradle and licensed under the EUPL-1.2. The structure follows amade-imagescan.
+Fractal explorer of amadeOS. It uses Java 25, Swing, Guice and [amade-commons](https://github.com/datazuul/amade-commons), is built with Gradle and licensed under the EUPL-1.2. The structure follows amade-imagescan.
 
 Packaging:
 - a Debian package
