@@ -12,11 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FractalCanvasTest {
     @Test
-    void framesKeepTheWindowsShape() {
-        // 400 × 300 window: dragging 100 to the right and 10 down gives a 100 × 75 frame.
-        assertEquals(new Rectangle(50, 40, 100, 75), FractalCanvas.frameFor(50, 40, 150, 50, 400, 300));
+    void framesEndAtThePointer() {
+        // 400 × 300 window: dragging 100 to the right and 10 down gives a 100 × 10 frame.
+        assertEquals(new Rectangle(50, 40, 100, 10), FractalCanvas.frameFor(50, 40, 150, 50, 400, 300));
+        // Dragging mostly down does not widen the frame past the pointer.
+        assertEquals(new Rectangle(50, 40, 20, 200), FractalCanvas.frameFor(50, 40, 70, 240, 400, 300));
         // Dragging up and left grows the frame towards the top left.
-        assertEquals(new Rectangle(10, 25, 40, 30), FractalCanvas.frameFor(50, 55, 45, 25, 400, 300));
+        assertEquals(new Rectangle(45, 25, 5, 30), FractalCanvas.frameFor(50, 55, 45, 25, 400, 300));
+        // Dragging out of the window stops the frame at its edge.
+        assertEquals(new Rectangle(350, 0, 50, 40), FractalCanvas.frameFor(350, 40, 500, -20, 400, 300));
     }
 
     @Test

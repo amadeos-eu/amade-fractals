@@ -46,7 +46,7 @@ Languages: English, German, French, Spanish and Italian. The language follows th
 | `service.color` | `Colorizer` (smooth n + 1 − log(log\|z\|)/log d, bands, binary decomposition, orbit trap; Newton by root, darker with iterations) |
 | `repository` | `ParameterFiles` (`.fractal`, UTF-8 properties, all digits of the centre), `ImageFiles` (PNG/JPEG, atomic writes), `FractalsPreferences` (`~/.config/amadeos/fractals/fractals.properties`: bars, automatic iterations, export size) |
 | `ui.main` | `MainPresenter` (all commands and the history, no Swing), `MainView`, `MainWindow`, `MainMenuBar`, `MainToolBar`, `SettingsPanel` (fractal, location, colours), `FractalActions` (one action per command for menus and toolbar), `Formats` (magnification "1.5 × 10⁶", coordinates) |
-| `ui.view` | `FractalCanvas` (picture, gestures, transform until the next picture, frame with the window's shape, notes and a progress line over the picture) |
+| `ui.view` | `FractalCanvas` (picture, gestures, transform until the next picture, zoom frame up to the pointer, notes and a progress line over the picture) |
 | `ui.icons` | `ToolIcon` (toolbar icons drawn in Java2D in the theme's colours) |
 
 ## Flows
