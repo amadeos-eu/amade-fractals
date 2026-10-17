@@ -281,16 +281,16 @@ public final class FractalCanvas extends JComponent {
         return t;
     }
 
-    /** A frame from the press point with the window's shape, as large as the drag reaches in either direction. */
+    /**
+     * The frame between the press point and the pointer, in any shape: zooming shows all of it, with more of the
+     * picture on its shorter side.
+     */
     static Rectangle frameFor(int x0, int y0, int x1, int y1, int width, int height) {
-        double aspect = width / (double) Math.max(1, height);
-        double w = Math.abs(x1 - x0);
-        double h = Math.abs(y1 - y0);
-        if (w / aspect > h) h = w / aspect;
-        else w = h * aspect;
-        int left = x1 >= x0 ? x0 : (int) Math.round(x0 - w);
-        int top = y1 >= y0 ? y0 : (int) Math.round(y0 - h);
-        return new Rectangle(left, top, Math.max(1, (int) Math.round(w)), Math.max(1, (int) Math.round(h)));
+        int left = Math.max(0, Math.min(x0, x1));
+        int top = Math.max(0, Math.min(y0, y1));
+        int right = Math.min(width, Math.max(x0, x1));
+        int bottom = Math.min(height, Math.max(y0, y1));
+        return new Rectangle(left, top, Math.max(1, right - left), Math.max(1, bottom - top));
     }
 
     @Override
