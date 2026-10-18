@@ -37,7 +37,7 @@ jobs:
         run: |
           jar=$(ls build/libs/amade-fractals-*.jar)
           unzip -l "$jar" icons/amade-fractals.png
-          unzip -p "$jar" META-INF/MANIFEST.MF | grep -q 'Main-Class: eu.amadeos.fractals'
+          unzip -p "$jar" META-INF/MANIFEST.MF | grep -q 'Main-Class: eu.amadeos.apps.fractals'
           deb=$(ls build/distributions/amade-fractals_*_all.deb)
           dpkg-deb --info "$deb"
           dpkg-deb --contents "$deb" > contents.txt

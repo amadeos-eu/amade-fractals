@@ -13,7 +13,7 @@ java {
 }
 
 application {
-    mainClass = 'eu.amadeos.fractals.bootstrap.AmadeFractalsApplication'
+    mainClass = 'eu.amadeos.apps.fractals.bootstrap.AmadeFractalsApplication'
 }
 
 repositories {
@@ -42,7 +42,7 @@ jar {
     archiveBaseName = 'amade-fractals'
     manifest {
         attributes(
-            'Main-Class': 'eu.amadeos.fractals.bootstrap.AmadeFractalsApplication',
+            'Main-Class': 'eu.amadeos.apps.fractals.bootstrap.AmadeFractalsApplication',
             'Implementation-Title': 'amade-fractals',
             'Implementation-Version': project.version
         )
