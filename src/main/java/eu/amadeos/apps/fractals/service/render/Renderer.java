@@ -79,6 +79,7 @@ public final class Renderer {
         return data;
     }
 
+    // --8<-- [start:run]
     private void run(RowTask rowTask, int rows, BooleanSupplier cancelled, Progress progress) {
         AtomicInteger next = new AtomicInteger();
         AtomicInteger done = new AtomicInteger();
@@ -112,6 +113,7 @@ public final class Renderer {
         if (error != null) throw new IllegalStateException(error);
         if (cancelled.getAsBoolean()) throw new CancellationException();
     }
+    // --8<-- [end:run]
 
     @FunctionalInterface
     private interface RowTask {

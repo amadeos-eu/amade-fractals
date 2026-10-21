@@ -245,12 +245,14 @@ public final class FractalCanvas extends JComponent {
         return progress;
     }
 
+    // --8<-- [start:set-picture]
     /** Shows a new picture, scaled to the window if smaller (a preview); a pending transform ends. */
     public void setPicture(BufferedImage newPicture) {
         picture = newPicture;
         pending = new AffineTransform();
         repaint();
     }
+    // --8<-- [end:set-picture]
 
     public BufferedImage picture() {
         return picture;
@@ -266,13 +268,16 @@ public final class FractalCanvas extends JComponent {
         return new AffineTransform(pending);
     }
 
+    // --8<-- [start:transform]
     private void transform(AffineTransform step) {
         AffineTransform combined = new AffineTransform(step);
         combined.concatenate(pending);
         pending = combined;
         repaint();
     }
+    // --8<-- [end:transform]
 
+    // --8<-- [start:scale-about]
     /** Moves point (x, y) to (toX, toY) and scales by {@code factor} around it. */
     static AffineTransform scaleAbout(double x, double y, double factor, double toX, double toY) {
         AffineTransform t = AffineTransform.getTranslateInstance(toX, toY);
@@ -280,6 +285,7 @@ public final class FractalCanvas extends JComponent {
         t.translate(-x, -y);
         return t;
     }
+    // --8<-- [end:scale-about]
 
     /**
      * The frame between the press point and the pointer, in any shape: zooming shows all of it, with more of the

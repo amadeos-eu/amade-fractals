@@ -104,6 +104,7 @@ class RendererTest {
         assertEquals("done", events.get(events.size() - 1));
     }
 
+    // --8<-- [start:cancelled]
     @Test
     void cancelledTasksReportNothing() {
         QueueExecutor executor = new QueueExecutor();
@@ -114,6 +115,7 @@ class RendererTest {
         executor.runAll();
         assertEquals(List.of(), events);
     }
+    // --8<-- [end:cancelled]
 
     @Test
     void exportAssemblesStripsIntoTheWholePicture() {

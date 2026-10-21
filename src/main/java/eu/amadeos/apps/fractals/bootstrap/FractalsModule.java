@@ -43,6 +43,7 @@ public final class FractalsModule extends AbstractModule {
         return new ParameterFiles(files);
     }
 
+    // --8<-- [start:renderer]
     /**
      * The calculation runs on one platform thread per core, a little below normal priority so that the
      * window stays responsive.
@@ -53,6 +54,7 @@ public final class FractalsModule extends AbstractModule {
         int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
         return new Renderer(Executors.newFixedThreadPool(cores, workerThreads()), cores);
     }
+    // --8<-- [end:renderer]
 
     static ThreadFactory workerThreads() {
         AtomicInteger count = new AtomicInteger();

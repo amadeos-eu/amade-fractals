@@ -47,7 +47,7 @@ Languages: English, German, French, Spanish and Italian. The language follows th
 | `repository` | `ParameterFiles` (`.fractal`, UTF-8 properties, all digits of the centre), `ImageFiles` (PNG/JPEG, atomic writes), `FractalsPreferences` (`~/.config/amadeos/fractals/fractals.properties`: bars, automatic iterations, export size) |
 | `ui.main` | `MainPresenter` (all commands and the history, no Swing), `MainView`, `MainWindow`, `MainMenuBar`, `MainToolBar`, `SettingsPanel` (fractal, location, colours), `FractalActions` (one action per command for menus and toolbar), `Formats` (magnification "1.5 × 10⁶", coordinates) |
 | `ui.view` | `FractalCanvas` (picture, gestures, transform until the next picture, zoom frame up to the pointer, notes and a progress line over the picture) |
-| `ui.icons` | `ToolIcon` (toolbar icons drawn in Java2D in the theme's colours) |
+| `ui.icons` | `FractalGlyph` (the toolbar glyphs only Fractals needs; `ToolIcon`, `StandardGlyph` and `ToolButtons` come from amade-commons) |
 
 ## Flows
 
@@ -61,7 +61,7 @@ Languages: English, German, French, Spanish and Italian. The language follows th
   1. `RenderService.render` runs on the virtual-thread executor from amade-commons, which hands the rows to the worker pool.
   2. A coarse preview at a quarter of the size comes first if the picture has more than 200 000 pixels.
   3. Progress is reported at most every 50 ms.
-  4. Results reach the presenter through the `@Ui` executor, and are dropped if the task was cancelled meanwhile.
+  4. Results reach the presenter through the `@Ui` executor (bound by amade-commons), and are dropped if the task was cancelled meanwhile.
 - **Colours**
   - Colour changes recolour the existing `FractalData` into the same `BufferedImage`.
   - Colour cycling is a 40 ms Swing timer that moves the palette shift.

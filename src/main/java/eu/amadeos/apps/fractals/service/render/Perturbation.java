@@ -88,6 +88,7 @@ final class Perturbation {
         return length;
     }
 
+    // --8<-- [start:compute]
     /** Calculates the pixel at distance {@code dcr + i·dci} from the centre. */
     void compute(double dcr, double dci, FractalData data, int index) {
         double dzr = 0;
@@ -119,4 +120,5 @@ final class Perturbation {
         }
         data.set(index, FractalData.INSIDE, max, zr, zi, trap);
     }
+    // --8<-- [end:compute]
 }

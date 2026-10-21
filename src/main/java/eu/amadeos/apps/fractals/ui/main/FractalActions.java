@@ -50,9 +50,11 @@ public final class FractalActions {
 
     public FractalActions(MainPresenter presenter, Messages msg) {
         this.msg = msg;
+        // --8<-- [start:actions]
         open = action("menu.file.open", StandardGlyph.OPEN, KeyEvent.VK_O, CTRL, presenter::openParameters);
         saveParameters = action("menu.file.save", StandardGlyph.SAVE, KeyEvent.VK_S, CTRL, presenter::saveParameters);
-        saveImage = action("menu.file.save-image", FractalGlyph.PICTURE, KeyEvent.VK_S, CTRL | SHIFT, presenter::saveImage);
+        saveImage = action("menu.file.save-image", FractalGlyph.PICTURE, KeyEvent.VK_S, CTRL | SHIFT,
+                presenter::saveImage);
         exportImage = action("menu.file.export", FractalGlyph.EXPORT, KeyEvent.VK_E, CTRL, presenter::exportImage);
         exit = action("menu.file.exit", null, KeyEvent.VK_Q, CTRL, presenter::exit);
         back = action("menu.edit.back", FractalGlyph.BACK, KeyEvent.VK_Z, CTRL, presenter::goBack);
@@ -73,6 +75,7 @@ public final class FractalActions {
         stop = action("menu.view.stop", FractalGlyph.STOP, KeyEvent.VK_ESCAPE, 0, presenter::stop);
         fullScreen = action("menu.view.full-screen", FractalGlyph.FULL_SCREEN, KeyEvent.VK_F11, 0,
                 presenter::toggleFullScreen);
+        // --8<-- [end:actions]
         escape = new AbstractAction("escape") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -137,10 +140,12 @@ public final class FractalActions {
         String tip = msg.has(key + ".tip") ? msg.get(key + ".tip") : text.text();
         action.putValue(Action.SHORT_DESCRIPTION, tip);
         if (keyCode != 0) action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyCode, modifiers));
+        // --8<-- [start:icons]
         if (glyph != null) {
             action.putValue(Action.SMALL_ICON, new ToolIcon(glyph, 16));
             action.putValue(Action.LARGE_ICON_KEY, new ToolIcon(glyph));
         }
+        // --8<-- [end:icons]
         return action;
     }
 }

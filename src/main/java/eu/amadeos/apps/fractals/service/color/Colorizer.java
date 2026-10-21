@@ -26,6 +26,7 @@ public final class Colorizer {
         return image;
     }
 
+    // --8<-- [start:colorize]
     /** Paints the data into a picture of the same size, type {@link BufferedImage#TYPE_INT_RGB}. */
     public static void colorize(FractalData data, ColorSettings colors, Gradient gradient, BufferedImage target) {
         if (target.getWidth() != data.width() || target.getHeight() != data.height()
@@ -41,6 +42,7 @@ public final class Colorizer {
             pixels[i] = color(data, i, coloring, scale, offset, logDegree, gradient);
         }
     }
+    // --8<-- [end:colorize]
 
     /** The colour of one pixel. */
     static int color(FractalData data, int i, Coloring coloring, double scale, double offset, double logDegree,
@@ -69,6 +71,7 @@ public final class Colorizer {
         return gradient.at(value * scale + offset);
     }
 
+    // --8<-- [start:smooth]
     /** n + 1 − log(log |z|) / log d: continuous where the plain count jumps. */
     static double smooth(int n, double re, double im, double logDegree) {
         double logModulus = 0.5 * Math.log(re * re + im * im);
@@ -76,6 +79,7 @@ public final class Colorizer {
         double value = n + 1 - Math.log(logModulus) / logDegree;
         return Double.isFinite(value) ? Math.max(0, value) : n;
     }
+    // --8<-- [end:smooth]
 
     private static int darken(int rgb, double factor) {
         int r = (int) (((rgb >> 16) & 0xFF) * factor);
