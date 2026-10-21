@@ -1,5 +1,6 @@
 package eu.amadeos.apps.fractals.ui.main;
 
+import eu.amadeos.commons.swing.ToolIcon;
 import eu.amadeos.commons.theme.DesktopTheme;
 import eu.amadeos.apps.fractals.OnEdt;
 import eu.amadeos.apps.fractals.QueueExecutor;
@@ -11,7 +12,7 @@ import eu.amadeos.apps.fractals.repository.ImageFiles;
 import eu.amadeos.apps.fractals.repository.ParameterFiles;
 import eu.amadeos.apps.fractals.service.render.RenderService;
 import eu.amadeos.apps.fractals.service.render.Renderer;
-import eu.amadeos.apps.fractals.ui.icons.ToolIcon;
+import eu.amadeos.apps.fractals.ui.icons.FractalGlyph;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -163,7 +164,7 @@ class MainWindowTest {
     void everyGlyphPaints() throws Exception {
         assumeFalse(GraphicsEnvironment.isHeadless(), "needs a display");
         OnEdt.run(() -> {
-            for (ToolIcon.Glyph glyph : ToolIcon.Glyph.values()) {
+            for (FractalGlyph glyph : FractalGlyph.values()) {
                 ToolIcon icon = new ToolIcon(glyph, 32);
                 BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
                 icon.paintIcon(new JButton(), image.getGraphics(), 0, 0);

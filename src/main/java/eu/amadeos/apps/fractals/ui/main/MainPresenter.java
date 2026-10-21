@@ -1,6 +1,7 @@
 package eu.amadeos.apps.fractals.ui.main;
 
 import com.google.inject.Inject;
+import eu.amadeos.commons.app.Ui;
 import eu.amadeos.commons.i18n.Language;
 import eu.amadeos.commons.i18n.LocaleSettings;
 import eu.amadeos.commons.i18n.Messages;

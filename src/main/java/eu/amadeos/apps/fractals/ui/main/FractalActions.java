@@ -2,8 +2,10 @@ package eu.amadeos.apps.fractals.ui.main;
 
 import eu.amadeos.commons.i18n.Messages;
 import eu.amadeos.commons.i18n.Mnemonics;
-import eu.amadeos.apps.fractals.ui.icons.ToolIcon;
-import eu.amadeos.apps.fractals.ui.icons.ToolIcon.Glyph;
+import eu.amadeos.commons.swing.StandardGlyph;
+import eu.amadeos.commons.swing.ToolIcon;
+import eu.amadeos.commons.swing.ToolIcon.Glyph;
+import eu.amadeos.apps.fractals.ui.icons.FractalGlyph;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -48,28 +50,28 @@ public final class FractalActions {
 
     public FractalActions(MainPresenter presenter, Messages msg) {
         this.msg = msg;
-        open = action("menu.file.open", Glyph.OPEN, KeyEvent.VK_O, CTRL, presenter::openParameters);
-        saveParameters = action("menu.file.save", Glyph.SAVE, KeyEvent.VK_S, CTRL, presenter::saveParameters);
-        saveImage = action("menu.file.save-image", Glyph.PICTURE, KeyEvent.VK_S, CTRL | SHIFT, presenter::saveImage);
-        exportImage = action("menu.file.export", Glyph.EXPORT, KeyEvent.VK_E, CTRL, presenter::exportImage);
+        open = action("menu.file.open", StandardGlyph.OPEN, KeyEvent.VK_O, CTRL, presenter::openParameters);
+        saveParameters = action("menu.file.save", StandardGlyph.SAVE, KeyEvent.VK_S, CTRL, presenter::saveParameters);
+        saveImage = action("menu.file.save-image", FractalGlyph.PICTURE, KeyEvent.VK_S, CTRL | SHIFT, presenter::saveImage);
+        exportImage = action("menu.file.export", FractalGlyph.EXPORT, KeyEvent.VK_E, CTRL, presenter::exportImage);
         exit = action("menu.file.exit", null, KeyEvent.VK_Q, CTRL, presenter::exit);
-        back = action("menu.edit.back", Glyph.BACK, KeyEvent.VK_Z, CTRL, presenter::goBack);
-        forward = action("menu.edit.forward", Glyph.FORWARD, KeyEvent.VK_Y, CTRL, presenter::goForward);
-        copy = action("menu.edit.copy", Glyph.COPY, KeyEvent.VK_C, CTRL, presenter::copy);
+        back = action("menu.edit.back", FractalGlyph.BACK, KeyEvent.VK_Z, CTRL, presenter::goBack);
+        forward = action("menu.edit.forward", FractalGlyph.FORWARD, KeyEvent.VK_Y, CTRL, presenter::goForward);
+        copy = action("menu.edit.copy", StandardGlyph.COPY, KeyEvent.VK_C, CTRL, presenter::copy);
         copyParameters = action("menu.edit.copy-parameters", null, KeyEvent.VK_C, CTRL | SHIFT,
                 presenter::copyParameters);
-        home = action("menu.view.home", Glyph.HOME, KeyEvent.VK_HOME, 0, presenter::home);
-        zoomIn = action("menu.view.zoom-in", Glyph.ZOOM_IN, KeyEvent.VK_PLUS, CTRL, presenter::zoomIn);
-        zoomOut = action("menu.view.zoom-out", Glyph.ZOOM_OUT, KeyEvent.VK_MINUS, CTRL, presenter::zoomOut);
-        julia = action("menu.fractal.julia", Glyph.JULIA, KeyEvent.VK_J, CTRL, presenter::toggleJulia);
+        home = action("menu.view.home", FractalGlyph.HOME, KeyEvent.VK_HOME, 0, presenter::home);
+        zoomIn = action("menu.view.zoom-in", StandardGlyph.ZOOM_IN, KeyEvent.VK_PLUS, CTRL, presenter::zoomIn);
+        zoomOut = action("menu.view.zoom-out", StandardGlyph.ZOOM_OUT, KeyEvent.VK_MINUS, CTRL, presenter::zoomOut);
+        julia = action("menu.fractal.julia", FractalGlyph.JULIA, KeyEvent.VK_J, CTRL, presenter::toggleJulia);
         moreIterations = action("menu.fractal.more-iterations", null, KeyEvent.VK_I, CTRL,
                 presenter::doubleIterations);
         fewerIterations = action("menu.fractal.fewer-iterations", null, KeyEvent.VK_I, CTRL | SHIFT,
                 presenter::halveIterations);
-        cycle = action("menu.colors.cycle", Glyph.CYCLE, KeyEvent.VK_K, CTRL, presenter::toggleCycling);
-        refresh = action("menu.view.refresh", Glyph.REFRESH, KeyEvent.VK_F5, 0, presenter::refresh);
-        stop = action("menu.view.stop", Glyph.STOP, KeyEvent.VK_ESCAPE, 0, presenter::stop);
-        fullScreen = action("menu.view.full-screen", Glyph.FULL_SCREEN, KeyEvent.VK_F11, 0,
+        cycle = action("menu.colors.cycle", FractalGlyph.CYCLE, KeyEvent.VK_K, CTRL, presenter::toggleCycling);
+        refresh = action("menu.view.refresh", StandardGlyph.REFRESH, KeyEvent.VK_F5, 0, presenter::refresh);
+        stop = action("menu.view.stop", FractalGlyph.STOP, KeyEvent.VK_ESCAPE, 0, presenter::stop);
+        fullScreen = action("menu.view.full-screen", FractalGlyph.FULL_SCREEN, KeyEvent.VK_F11, 0,
                 presenter::toggleFullScreen);
         escape = new AbstractAction("escape") {
             @Override
