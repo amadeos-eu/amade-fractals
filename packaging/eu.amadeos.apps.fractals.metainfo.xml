@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata of amade-fractals, installed as /usr/share/metainfo/eu.amadeos.apps.fractals.metainfo.xml.
+     amadeOS Software shows it for the installed package; a repository's appstream-generator reads it too. -->
+<component type="desktop-application">
+  <id>eu.amadeos.apps.fractals</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>EUPL-1.2</project_license>
+
+  <name>amadeOS Fractals</name>
+  <name xml:lang="de">amadeOS Fraktale</name>
+  <name xml:lang="fr">amadeOS Fractales</name>
+  <name xml:lang="es">amadeOS Fractales</name>
+  <name xml:lang="it">amadeOS Frattali</name>
+
+  <summary>Explore the Mandelbrot set, Julia sets and other fractals</summary>
+  <summary xml:lang="de">Mandelbrot-Menge, Julia-Mengen und andere Fraktale erkunden</summary>
+  <summary xml:lang="fr">Explorer l'ensemble de Mandelbrot, les ensembles de Julia et d'autres fractales</summary>
+  <summary xml:lang="es">Explorar el conjunto de Mandelbrot, los conjuntos de Julia y otros fractales</summary>
+  <summary xml:lang="it">Esplorare l'insieme di Mandelbrot, gli insiemi di Julia e altri frattali</summary>
+
+  <description>
+    <p>amade-fractals is the fractal explorer of the amadeOS desktop: render the Mandelbrot set and its relatives, zoom in with a click, a frame or the mouse wheel, follow a Julia set from any point, colour the result and export it as a large picture.</p>
+    <p xml:lang="de">amade-fractals ist der Fraktal-Explorer des amadeOS-Desktops: die Mandelbrot-Menge und ihre Verwandten berechnen, mit einem Klick, einem Rahmen oder dem Mausrad hineinzoomen, von jedem Punkt aus eine Julia-Menge zeigen, das Ergebnis einfärben und als großes Bild exportieren.</p>
+    <p xml:lang="fr">amade-fractals est l'explorateur de fractales du bureau amadeOS : calculer l'ensemble de Mandelbrot et ses cousins, zoomer d'un clic, d'un cadre ou de la molette, suivre un ensemble de Julia depuis n'importe quel point, colorer le résultat et l'exporter en grande image.</p>
+    <p xml:lang="es">amade-fractals es el explorador de fractales del escritorio amadeOS: calcular el conjunto de Mandelbrot y sus parientes, ampliar con un clic, un marco o la rueda del ratón, seguir un conjunto de Julia desde cualquier punto, colorear el resultado y exportarlo como una imagen grande.</p>
+    <p xml:lang="it">amade-fractals è l'esploratore di frattali del desktop amadeOS: calcolare l'insieme di Mandelbrot e i suoi parenti, ingrandire con un clic, una cornice o la rotella del mouse, seguire un insieme di Julia da qualsiasi punto, colorare il risultato ed esportarlo come immagine grande.</p>
+    <ul>
+      <li>Nine formulas, each escape-time formula also as a Julia set</li>
+      <li xml:lang="de">Neun Formeln, jede Fluchtzeit-Formel auch als Julia-Menge</li>
+      <li xml:lang="fr">Neuf formules, chaque formule à temps d'échappement aussi en ensemble de Julia</li>
+      <li xml:lang="es">Nueve fórmulas, cada fórmula de tiempo de escape también como conjunto de Julia</li>
+      <li xml:lang="it">Nove formule, ogni formula a tempo di fuga anche come insieme di Julia</li>
+      <li>Deep zoom far below the precision of double</li>
+      <li xml:lang="de">Tiefer Zoom weit unter die Genauigkeit von double</li>
+      <li xml:lang="fr">Zoom profond bien au-delà de la précision des double</li>
+      <li xml:lang="es">Zoom profundo mucho más allá de la precisión de double</li>
+      <li xml:lang="it">Zoom profondo ben oltre la precisione dei double</li>
+      <li>Eight palettes, smooth colouring and colour cycling</li>
+      <li xml:lang="de">Acht Paletten, weiche Farbverläufe und Farbrotation</li>
+      <li xml:lang="fr">Huit palettes, coloration lisse et cycle de couleurs</li>
+      <li xml:lang="es">Ocho paletas, coloreado suave y ciclo de colores</li>
+      <li xml:lang="it">Otto tavolozze, colorazione sfumata e ciclo dei colori</li>
+      <li>Places to visit, full screen and export as a large picture</li>
+      <li xml:lang="de">Sehenswerte Orte, Vollbild und Export als großes Bild</li>
+      <li xml:lang="fr">Lieux à visiter, plein écran et export en grande image</li>
+      <li xml:lang="es">Lugares para visitar, pantalla completa y exportación como imagen grande</li>
+      <li xml:lang="it">Luoghi da visitare, schermo intero ed esportazione come immagine grande</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">amade-fractals.desktop</launchable>
+  <icon type="stock">amade-fractals</icon>
+  <categories>
+    <category>Graphics</category>
+    <category>Education</category>
+    <category>Math</category>
+  </categories>
+
+  <url type="homepage">https://github.com/datazuul/amade-fractals</url>
+  <url type="bugtracker">https://github.com/datazuul/amade-fractals/issues</url>
+  <developer id="eu.amadeos">
+    <name>amadeOS Project</name>
+  </developer>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Seahorse Valley of the Mandelbrot set</caption>
+      <caption xml:lang="de">Seepferdchental der Mandelbrot-Menge</caption>
+      <caption xml:lang="fr">La vallée des hippocampes de l'ensemble de Mandelbrot</caption>
+      <caption xml:lang="es">El valle de los caballitos de mar del conjunto de Mandelbrot</caption>
+      <caption xml:lang="it">La valle dei cavallucci marini dell'insieme di Mandelbrot</caption>
+      <image>https://raw.githubusercontent.com/datazuul/amade-fractals/main/docs/screenshots/amade-fractals.png</image>
+    </screenshot>
+  </screenshots>
+
+  <provides>
+    <binary>amade-fractals</binary>
+  </provides>
+  <content_rating type="oars-1.1"/>
+</component>
