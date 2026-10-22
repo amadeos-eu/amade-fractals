@@ -33,6 +33,7 @@ jobs:
           test "$skipped" -eq 0
       - name: Package
         run: ./gradlew jar deb --no-daemon
+      # --8<-- [start:check-deb]
       - name: Check the fat jar and the package
         run: |
           jar=$(ls build/libs/amade-fractals-*.jar)
@@ -43,9 +44,11 @@ jobs:
           dpkg-deb --contents "$deb" > contents.txt
           for f in opt/amade-fractals/amade-fractals.jar usr/bin/amade-fractals \
                    usr/share/applications/amade-fractals.desktop \
-                   usr/share/icons/hicolor/48x48/apps/amade-fractals.png usr/share/doc/amade-fractals/copyright; do
+                   usr/share/icons/hicolor/48x48/apps/amade-fractals.png \
+                   usr/share/metainfo/eu.amadeos.apps.fractals.metainfo.xml usr/share/doc/amade-fractals/copyright; do
             grep -q "$f" contents.txt || { echo "missing in the package: $f"; exit 1; }
           done
+      # --8<-- [end:check-deb]
       - name: Upload the Debian package
         uses: actions/upload-artifact@v7
         with:
@@ -70,6 +73,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v6
         with:
           cache-provider: basic
+      # --8<-- [start:wix]
       # jpackage needs the WiX Toolset for MSI; CI installs WiX 3 (JDK 25 also takes WiX 4/5).
       - name: Install WiX Toolset 3
         shell: pwsh
@@ -82,6 +86,7 @@ jobs:
             }
             $bin.FullName | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
           }
+      # --8<-- [end:wix]
       # Not required yet: the tests have only been run on Linux so far. Make this step required
       # (remove continue-on-error) once it passes.
       - name: Test on Windows
@@ -103,6 +108,7 @@ jobs:
               }
             }
           }
+      # --8<-- [start:windows-build]
       - name: Build the MSI
         run: ./gradlew windowsInstaller --no-daemon
       - name: Build the portable app image
@@ -116,6 +122,7 @@ jobs:
           if (-not (Test-Path build/windows/app-image/amade-fractals/amade-fractals.exe)) { throw 'amade-fractals.exe missing' }
           Compress-Archive -Path build/windows/app-image/amade-fractals -DestinationPath build/windows/amade-fractals-portable.zip
           Write-Host "MSI: $($msi.Name), $([math]::Round($msi.Length / 1MB)) MB"
+      # --8<-- [end:windows-build]
       - name: Upload the Windows packages
         uses: actions/upload-artifact@v7
         with:
