@@ -96,6 +96,7 @@ class CalculationTest {
         assertEquals(FractalData.INSIDE, point(s, 0, 0).state(0));
     }
 
+    // --8<-- [start:perturbation]
     @Test
     void perturbationAgreesWithArbitraryPrecision() {
         FractalSettings deep = Place.DEEP_SEAHORSE.settings().withMaxIterations(20_000).withBailout(2);
@@ -116,6 +117,7 @@ class CalculationTest {
                     () -> "pixel " + p[0] + "," + p[1] + ": " + data.iterations(index) + " instead of " + truth);
         }
     }
+    // --8<-- [end:perturbation]
 
     @Test
     void perturbationAgreesWithDoublesWhereBothWork() {

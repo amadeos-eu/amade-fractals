@@ -64,6 +64,7 @@ public final class FractalData {
         perturbation = used;
     }
 
+    // --8<-- [start:set]
     /** Stores the result for one pixel; {@code trap} is the smallest |z|² of the orbit. */
     public void set(int index, byte state, int n, double re, double im, double trapSquared) {
         states[index] = state;
@@ -72,6 +73,7 @@ public final class FractalData {
         lastIm[index] = (float) im;
         trap[index] = (float) trapSquared;
     }
+    // --8<-- [end:set]
 
     public byte state(int index) {
         return states[index];

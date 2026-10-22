@@ -16,6 +16,7 @@ import eu.amadeos.apps.fractals.ui.view.FractalCanvas;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -234,6 +235,10 @@ public final class MainWindow extends JFrame implements MainView {
 
     JProgressBar progressBar() {
         return progress;
+    }
+
+    JPanel statusBarPanel() {
+        return statusBar;
     }
 
     boolean isCycleTimerRunning() {
@@ -662,6 +667,10 @@ public final class MainWindow extends JFrame implements MainView {
         right.add(pointer);
         right.add(zoom);
         right.add(progress);
+        // Holds the height of the progress bar while it is hidden. Otherwise the status bar, and with it the
+        // canvas, would change height whenever a calculation starts or ends, and each new canvas size starts
+        // a new calculation.
+        right.add(Box.createVerticalStrut(progress.getPreferredSize().height));
         bar.add(left, BorderLayout.CENTER);
         bar.add(right, BorderLayout.EAST);
         return bar;

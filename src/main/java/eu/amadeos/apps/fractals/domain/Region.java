@@ -64,11 +64,13 @@ public record Region(BigDecimal re, BigDecimal im, double size) {
                 round(im.add(new BigDecimal(offsetIm(y, width, height))), size)};
     }
 
+    // --8<-- [start:zoom-at]
     /** Zooms by {@code factor} (greater than 1 zooms in) and keeps the point under the pointer in place. */
     public Region zoomAt(double x, double y, int width, int height, double factor) {
         double keep = 1 - 1 / factor;
         return moved(offsetRe(x, width, height) * keep, offsetIm(y, width, height) * keep, size / factor);
     }
+    // --8<-- [end:zoom-at]
 
     /** Zooms by {@code factor} around the centre. */
     public Region zoom(double factor) {
@@ -120,9 +122,11 @@ public record Region(BigDecimal re, BigDecimal im, double size) {
         return Math.max(3, (int) Math.ceil(-Math.log10(size)) + 4);
     }
 
+    // --8<-- [start:round]
     /** Enough digits for a picture of up to 10 000 pixels, without the noise of binary fractions. */
     private static BigDecimal round(BigDecimal value, double size) {
         BigDecimal rounded = value.setScale(decimals(size) + 4, RoundingMode.HALF_EVEN).stripTrailingZeros();
         return rounded.signum() == 0 ? BigDecimal.ZERO : rounded;
     }
+    // --8<-- [end:round]
 }

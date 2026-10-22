@@ -4,8 +4,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
+import eu.amadeos.commons.app.Ui;
 import eu.amadeos.commons.i18n.Messages;
-import eu.amadeos.commons.swing.EdtExecutor;
 import eu.amadeos.apps.fractals.repository.FractalsPreferences;
 import eu.amadeos.apps.fractals.repository.ImageFiles;
 import eu.amadeos.apps.fractals.repository.ParameterFiles;
@@ -13,7 +13,6 @@ import eu.amadeos.apps.fractals.service.render.RenderService;
 import eu.amadeos.apps.fractals.service.render.Renderer;
 import eu.amadeos.apps.fractals.ui.main.MainView;
 import eu.amadeos.apps.fractals.ui.main.MainWindow;
-import eu.amadeos.apps.fractals.ui.main.Ui;
 
 import java.util.Locale;
 import java.util.concurrent.Executor;
@@ -44,6 +43,7 @@ public final class FractalsModule extends AbstractModule {
         return new ParameterFiles(files);
     }
 
+    // --8<-- [start:renderer]
     /**
      * The calculation runs on one platform thread per core, a little below normal priority so that the
      * window stays responsive.
@@ -54,6 +54,7 @@ public final class FractalsModule extends AbstractModule {
         int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
         return new Renderer(Executors.newFixedThreadPool(cores, workerThreads()), cores);
     }
+    // --8<-- [end:renderer]
 
     static ThreadFactory workerThreads() {
         AtomicInteger count = new AtomicInteger();
@@ -69,13 +70,6 @@ public final class FractalsModule extends AbstractModule {
     @Singleton
     RenderService renderService(Renderer renderer, ExecutorService background, @Ui Executor ui) {
         return new RenderService(renderer, background, ui);
-    }
-
-    /** Continues on the event dispatch thread after background work. */
-    @Provides
-    @Ui
-    Executor ui(EdtExecutor edt) {
-        return edt;
     }
 
     /** The texts in the language {@code AmadeApplication} chose. */

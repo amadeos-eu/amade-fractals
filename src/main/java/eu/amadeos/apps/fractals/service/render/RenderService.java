@@ -77,6 +77,7 @@ public class RenderService {
         return task;
     }
 
+    // --8<-- [start:run]
     private void run(Task task, FractalSettings settings, int width, int height, boolean preview, Listener listener) {
         long start = System.nanoTime();
         AtomicLong lastReport = new AtomicLong();
@@ -101,6 +102,7 @@ public class RenderService {
             post(task, () -> listener.failed(e));
         }
     }
+    // --8<-- [end:run]
 
     /** Called on the event dispatch thread, never after the task was cancelled. */
     public interface ExportListener {
@@ -125,6 +127,7 @@ public class RenderService {
                 BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
                 Region region = settings.region();
                 double pixel = region.pixelSize(height);
+                // --8<-- [start:strips]
                 for (int top = 0; top < height; top += EXPORT_STRIP) {
                     int rows = Math.min(EXPORT_STRIP, height - top);
                     // The strip's own region: same pixel size, centred on the strip.
@@ -138,6 +141,7 @@ public class RenderService {
                     BufferedImage part = Colorizer.image(data, colors, gradient);
                     image.getRaster().setDataElements(0, top, part.getRaster());
                 }
+                // --8<-- [end:strips]
                 Duration time = Duration.ofNanos(System.nanoTime() - start);
                 post(task, () -> listener.done(image, time));
             } catch (CancellationException e) {
@@ -163,9 +167,11 @@ public class RenderService {
         post(task, () -> progress.accept(fraction));
     }
 
+    // --8<-- [start:post]
     private void post(Task task, Runnable action) {
         ui.execute(() -> {
             if (!task.isCancelled()) action.run();
         });
     }
+    // --8<-- [end:post]
 }

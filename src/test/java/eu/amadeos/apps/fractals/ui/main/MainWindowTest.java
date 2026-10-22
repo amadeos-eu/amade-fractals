@@ -1,5 +1,6 @@
 package eu.amadeos.apps.fractals.ui.main;
 
+import eu.amadeos.commons.swing.ToolIcon;
 import eu.amadeos.commons.theme.DesktopTheme;
 import eu.amadeos.apps.fractals.OnEdt;
 import eu.amadeos.apps.fractals.QueueExecutor;
@@ -11,7 +12,7 @@ import eu.amadeos.apps.fractals.repository.ImageFiles;
 import eu.amadeos.apps.fractals.repository.ParameterFiles;
 import eu.amadeos.apps.fractals.service.render.RenderService;
 import eu.amadeos.apps.fractals.service.render.Renderer;
-import eu.amadeos.apps.fractals.ui.icons.ToolIcon;
+import eu.amadeos.apps.fractals.ui.icons.FractalGlyph;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -159,11 +160,37 @@ class MainWindowTest {
                 modifiers, x, y, 1, false, button));
     }
 
+    // --8<-- [start:status-height]
+    /**
+     * The progress bar must not change the height of the status bar: the canvas would change its height with
+     * it, a new size means a new calculation, and a calculation that takes longer than the resize delay
+     * would start the next one when it ends, for ever.
+     */
+    @Test
+    void theProgressBarKeepsTheCanvasHeight() throws Exception {
+        assumeFalse(GraphicsEnvironment.isHeadless(), "needs a display");
+        OnEdt.run(() -> {
+            MainWindow window = new MainWindow(MainPresenterTest.MSG, null);
+            try {
+                window.showZoom("Zoom 1.3 × 10²⁰");
+                window.showStatus("Calculating with perturbation (deep zoom)...");
+                int idle = window.statusBarPanel().getPreferredSize().height;
+                window.showProgress(java.util.OptionalDouble.of(0.5));
+                assertEquals(idle, window.statusBarPanel().getPreferredSize().height);
+                window.hideProgress();
+                assertEquals(idle, window.statusBarPanel().getPreferredSize().height);
+            } finally {
+                window.dispose();
+            }
+        });
+    }
+    // --8<-- [end:status-height]
+
     @Test
     void everyGlyphPaints() throws Exception {
         assumeFalse(GraphicsEnvironment.isHeadless(), "needs a display");
         OnEdt.run(() -> {
-            for (ToolIcon.Glyph glyph : ToolIcon.Glyph.values()) {
+            for (FractalGlyph glyph : FractalGlyph.values()) {
                 ToolIcon icon = new ToolIcon(glyph, 32);
                 BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
                 icon.paintIcon(new JButton(), image.getGraphics(), 0, 0);
