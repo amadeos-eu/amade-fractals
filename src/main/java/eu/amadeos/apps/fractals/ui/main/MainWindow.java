@@ -1,6 +1,8 @@
 package eu.amadeos.apps.fractals.ui.main;
 
 import com.google.inject.Inject;
+import eu.amadeos.commons.config.XdgDirectories;
+import eu.amadeos.commons.desktop.ImageSelection;
 import eu.amadeos.commons.i18n.LocaleSettings;
 import eu.amadeos.commons.i18n.Messages;
 import eu.amadeos.commons.swing.AmadeUI;
@@ -43,15 +45,10 @@ import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -399,26 +396,11 @@ public final class MainWindow extends JFrame implements MainView {
         return confirm(msg.format("dialog.overwrite.message", path.getFileName()), msg.get("dialog.overwrite.title"));
     }
 
-    /** ~/Pictures (or its translated name from the XDG user directories), else the home folder. */
+    /** The pictures folder from the XDG user directories if it exists, else the home folder. */
     private static File picturesDirectory() {
-        File home = new File(System.getProperty("user.home"));
-        try {
-            Path dirs = home.toPath().resolve(".config/user-dirs.dirs");
-            if (Files.isRegularFile(dirs)) {
-                for (String line : Files.readAllLines(dirs)) {
-                    if (line.startsWith("XDG_PICTURES_DIR=")) {
-                        String value = line.substring(line.indexOf('=') + 1).replace("\"", "")
-                                .replace("$HOME", home.getPath());
-                        File dir = new File(value);
-                        if (dir.isDirectory()) return dir;
-                    }
-                }
-            }
-        } catch (java.io.IOException | RuntimeException e) {
-            // fall through
-        }
-        File pictures = new File(home, "Pictures");
-        return pictures.isDirectory() ? pictures : home;
+        XdgDirectories xdg = XdgDirectories.system();
+        Path pictures = xdg.pictures();
+        return (Files.isDirectory(pictures) ? pictures : xdg.home()).toFile();
     }
 
     /** Sizes offered for export; the first is the window's own. */
@@ -492,8 +474,7 @@ public final class MainWindow extends JFrame implements MainView {
     @Override
     public void copyToClipboard(BufferedImage picture) {
         EdtExecutor.requireEdt();
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(new ImageSelection(picture), null);
+        ImageSelection.copy(picture);
     }
 
     @Override
@@ -501,25 +482,6 @@ public final class MainWindow extends JFrame implements MainView {
         EdtExecutor.requireEdt();
         StringSelection selection = new StringSelection(text);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, selection);
-    }
-
-    /** An image on the clipboard. */
-    private record ImageSelection(Image image) implements Transferable {
-        @Override
-        public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[]{DataFlavor.imageFlavor};
-        }
-
-        @Override
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return DataFlavor.imageFlavor.equals(flavor);
-        }
-
-        @Override
-        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
-            if (!isDataFlavorSupported(flavor)) throw new UnsupportedFlavorException(flavor);
-            return image;
-        }
     }
 
     @Override
