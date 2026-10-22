@@ -38,6 +38,7 @@ test {
     systemProperty 'user.country', 'US'
 }
 
+// --8<-- [start:jar]
 jar {
     archiveBaseName = 'amade-fractals'
     manifest {
@@ -54,6 +55,7 @@ jar {
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+// --8<-- [end:jar]
 
 tasks.register('deb') {
     dependsOn jar
@@ -80,6 +82,7 @@ tasks.register('deb') {
             rename { 'amade-fractals.jar' }
         }
 
+        // --8<-- [start:deb-files]
         def launcher = new File(binDir, 'amade-fractals')
         launcher.text = """#!/bin/sh
 exec /usr/bin/java -jar /opt/amade-fractals/amade-fractals.jar "\$@"
@@ -105,7 +108,9 @@ exec /usr/bin/java -jar /opt/amade-fractals/amade-fractals.jar "\$@"
             into docDir
             rename { 'copyright' }
         }
+        // --8<-- [end:deb-files]
 
+        // --8<-- [start:deb-control]
         new File(debianDir, 'control').text = """Package: amade-fractals
 Version: ${project.version}
 Section: graphics
@@ -132,9 +137,11 @@ Description: Fractal explorer for amadeOS
             throw new GradleException('dpkg-deb failed')
         }
         println "[deb] Created ${debFile.absolutePath}"
+        // --8<-- [end:deb-control]
     }
 }
 
+// --8<-- [start:install]
 tasks.register('installToAmadeOs') {
     dependsOn 'deb'
     description = 'Builds and drops the .deb package into ../amadeos/config/packages.chroot/'
@@ -151,7 +158,9 @@ tasks.register('installToAmadeOs') {
         println "[installToAmadeOs] Copied ${debFile.name} to ${targetDir.absolutePath}"
     }
 }
+// --8<-- [end:install]
 
+// --8<-- [start:windows]
 // Windows installer with jpackage: the fat jar plus a Java runtime, so Windows users need no Java.
 // jpackage builds Windows packages only on Windows; MSI and EXE also need WiX Toolset 3 on the PATH.
 //   ./gradlew windowsInstaller                           (MSI; output in build/windows/<type>/)
@@ -207,3 +216,4 @@ tasks.register('windowsInstaller') {
         destDir.eachFile { println "[windowsInstaller] Created ${it.absolutePath}" }
     }
 }
+// --8<-- [end:windows]
