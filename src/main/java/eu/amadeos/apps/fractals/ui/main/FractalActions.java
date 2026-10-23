@@ -55,7 +55,7 @@ public final class FractalActions {
         saveParameters = action("menu.file.save", StandardGlyph.SAVE, KeyEvent.VK_S, CTRL, presenter::saveParameters);
         saveImage = action("menu.file.save-image", FractalGlyph.PICTURE, KeyEvent.VK_S, CTRL | SHIFT,
                 presenter::saveImage);
-        exportImage = action("menu.file.export", FractalGlyph.EXPORT, KeyEvent.VK_E, CTRL, presenter::exportImage);
+        exportImage = action("menu.file.export", StandardGlyph.EXPORT, KeyEvent.VK_E, CTRL, presenter::exportImage);
         exit = action("menu.file.exit", null, KeyEvent.VK_Q, CTRL, presenter::exit);
         back = action("menu.edit.back", FractalGlyph.BACK, KeyEvent.VK_Z, CTRL, presenter::goBack);
         forward = action("menu.edit.forward", FractalGlyph.FORWARD, KeyEvent.VK_Y, CTRL, presenter::goForward);
@@ -73,7 +73,7 @@ public final class FractalActions {
         cycle = action("menu.colors.cycle", FractalGlyph.CYCLE, KeyEvent.VK_K, CTRL, presenter::toggleCycling);
         refresh = action("menu.view.refresh", StandardGlyph.REFRESH, KeyEvent.VK_F5, 0, presenter::refresh);
         stop = action("menu.view.stop", FractalGlyph.STOP, KeyEvent.VK_ESCAPE, 0, presenter::stop);
-        fullScreen = action("menu.view.full-screen", FractalGlyph.FULL_SCREEN, KeyEvent.VK_F11, 0,
+        fullScreen = action("menu.view.full-screen", StandardGlyph.FULL_SCREEN, KeyEvent.VK_F11, 0,
                 presenter::toggleFullScreen);
         // --8<-- [end:actions]
         escape = new AbstractAction("escape") {
