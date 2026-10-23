@@ -3,7 +3,6 @@ package eu.amadeos.apps.fractals.ui.icons;
 import eu.amadeos.commons.swing.StandardGlyph;
 import eu.amadeos.commons.swing.ToolIcon;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
@@ -11,18 +10,17 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * The toolbar glyphs only Fractals needs; open, save, copy, zoom and refresh come from
+ * The toolbar glyphs only Fractals needs; open, save, copy, export, zoom, refresh and full screen come from
  * {@link StandardGlyph}. Highlights (the sun, the Julia seed, a quarter of the colour wheel) are in the
  * theme's selection colour.
  */
 public enum FractalGlyph implements ToolIcon.Glyph {
-    PICTURE, EXPORT, BACK, FORWARD, HOME, JULIA, CYCLE, STOP, FULL_SCREEN;
+    PICTURE, BACK, FORWARD, HOME, JULIA, CYCLE, STOP;
 
     @Override
     public void paint(ToolIcon.Pen pen) {
         switch (this) {
             case PICTURE -> picture(pen, 1.5, 2.5, 13, 11);
-            case EXPORT -> export(pen);
             case BACK -> arrow(pen);
             case FORWARD -> {
                 pen.mirror();
@@ -32,7 +30,6 @@ public enum FractalGlyph implements ToolIcon.Glyph {
             case JULIA -> julia(pen);
             case CYCLE -> cycle(pen);
             case STOP -> stop(pen);
-            case FULL_SCREEN -> fullScreen(pen);
         }
     }
 
@@ -48,19 +45,6 @@ public enum FractalGlyph implements ToolIcon.Glyph {
         hills.lineTo(x + w - 0.5, y + h - 0.5);
         hills.closePath();
         pen.fill(hills, pen.ink());
-    }
-
-    /** A small picture growing into a large frame. */
-    private static void export(ToolIcon.Pen pen) {
-        pen.g().setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f,
-                new float[]{1.5f, 1.5f}, 0));
-        pen.draw(new Rectangle2D.Double(1.5, 1.5, 13, 13));
-        pen.thin();
-        picture(pen, 1.5, 7.5, 7, 7);
-        pen.bold(1.6f);
-        pen.line(9.5, 6.5, 13, 3);
-        pen.thin();
-        pen.triangle(14.5, 1.5, 14.5, 6.5, 9.5, 1.5);
     }
 
     /** Back points left; forward is its mirror image. */
@@ -123,19 +107,6 @@ public enum FractalGlyph implements ToolIcon.Glyph {
         pen.draw(new Arc2D.Double(1.5, 1.5, 13, 13, 100, 250, Arc2D.OPEN));
         pen.thin();
         pen.triangle(5, 0.5, 9, 2.2, 5.5, 4.8);
-    }
-
-    /** A screen with arrows to its four corners. */
-    private static void fullScreen(ToolIcon.Pen pen) {
-        pen.fillAndDraw(new Rectangle2D.Double(1.5, 2.5, 13, 11), pen.paper());
-        pen.g().setStroke(new BasicStroke(1.5f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-        double[][] corners = {{4, 5, 1, 1}, {12, 5, -1, 1}, {4, 11, 1, -1}, {12, 11, -1, -1}};
-        for (double[] c : corners) {
-            pen.line(c[0], c[1], c[0] + 2.5 * c[2], c[1]);
-            pen.line(c[0], c[1], c[0], c[1] + 2 * c[3]);
-            pen.line(c[0], c[1], c[0] + 2 * c[2], c[1] + 1.6 * c[3]);
-        }
-        pen.thin();
     }
 
     private static void stop(ToolIcon.Pen pen) {
