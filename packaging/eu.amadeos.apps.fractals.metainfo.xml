@@ -56,8 +56,8 @@
     <category>Math</category>
   </categories>
 
-  <url type="homepage">https://github.com/datazuul/amade-fractals</url>
-  <url type="bugtracker">https://github.com/datazuul/amade-fractals/issues</url>
+  <url type="homepage">https://github.com/amadeos-eu/amade-fractals</url>
+  <url type="bugtracker">https://github.com/amadeos-eu/amade-fractals/issues</url>
   <developer id="eu.amadeos">
     <name>amadeOS Project</name>
   </developer>
@@ -69,7 +69,7 @@
       <caption xml:lang="fr">La vallée des hippocampes de l'ensemble de Mandelbrot</caption>
       <caption xml:lang="es">El valle de los caballitos de mar del conjunto de Mandelbrot</caption>
       <caption xml:lang="it">La valle dei cavallucci marini dell'insieme di Mandelbrot</caption>
-      <image>https://raw.githubusercontent.com/datazuul/amade-fractals/main/docs/screenshots/amade-fractals.png</image>
+      <image>https://raw.githubusercontent.com/amadeos-eu/amade-fractals/main/docs/screenshots/amade-fractals.png</image>
     </screenshot>
   </screenshots>
 
