@@ -1,6 +1,6 @@
 # amade-fractals
 
-**amade-fractals** is the fractal explorer of the [amadeOS](https://github.com/datazuul/amadeos) desktop: render the Mandelbrot set and its relatives, zoom in with a click, a frame or the mouse wheel, follow a Julia set from any point, colour the result and export it as a large picture. Built like the other amadeOS applications.
+**amade-fractals** is the fractal explorer of the [amadeOS](https://github.com/amadeos-eu/amadeos) desktop: render the Mandelbrot set and its relatives, zoom in with a click, a frame or the mouse wheel, follow a Julia set from any point, colour the result and export it as a large picture. Built like the other amadeOS applications.
 
 ![License](https://img.shields.io/badge/license-EUPL--1.2-blue)
 ![Java](https://img.shields.io/badge/Java-25-orange)
@@ -34,11 +34,11 @@
   - A `.fractal` file given on the command line is opened.
 - Calculation on all processor cores; the rows go to whichever core is free.
 - Five languages (English, Deutsch, Français, Español, Italiano), following the amadeOS desktop language; *Options → Language* overrides it.
-- Theme colours, Motif look and 3D toolbar buttons from [amade-commons](https://github.com/datazuul/amade-commons). The toolbar icons are drawn in Java2D, so no icon theme is needed.
+- Theme colours, Motif look and 3D toolbar buttons from [amade-commons](https://github.com/amadeos-eu/amade-commons). The toolbar icons are drawn in Java2D, so no icon theme is needed.
 
 ## Architecture
 
-Java 25, Swing and Guice, built like [amade-imagescan](https://github.com/datazuul/amade-imagescan). Theme, language and start-up come from `AmadeApplication` in amade-commons. Packages, key decisions and flows are described in [ARCHITECTURE.md](ARCHITECTURE.md).
+Java 25, Swing and Guice, built like [amade-imagescan](https://github.com/amadeos-eu/amade-imagescan). Theme, language and start-up come from `AmadeApplication` in amade-commons. Packages, key decisions and flows are described in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Build and run
 
