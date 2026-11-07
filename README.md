@@ -5,6 +5,8 @@
 ![License](https://img.shields.io/badge/license-EUPL--1.2-blue)
 ![Java](https://img.shields.io/badge/Java-25-orange)
 
+![Fractals](docs/screenshots/amade-fractals.png)
+
 ## Features
 
 - **Nine formulas**: Mandelbrot set (z² + c), Multibrot (zⁿ + c, n = 3 to 12), Burning Ship, Tricorn (Mandelbar), Celtic, Buffalo, Phoenix, Magnet and Newton's method for z³ − 1. Every escape-time formula also has a **Julia form**. *Ctrl+click* on a point of the Mandelbrot form shows the Julia set of that point, and the seed can also be typed in.
